@@ -21,6 +21,10 @@ inputs:
       Reporter of reviewdog command [github-pr-check,github-pr-review].
       Default is github-pr-check.
     default: 'github-pr-check'
+  webhook_url:
+    description: |
+      If the reporter is set to webhook, then this specifies the URL for the webhook.
+    default: ''
   filter_mode:
     description: |
       Filtering mode for the reviewdog command [added,diff_context,file,nofilter].

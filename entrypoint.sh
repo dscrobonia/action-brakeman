@@ -33,7 +33,11 @@ fi
 
 gem install -N brakeman $(version $BRAKEMAN_VERSION)
 
-brakeman --quiet --format tabs ${INPUT_BRAKEMAN_FLAGS} \
+if [[ $INPUT_REPORTER = "webhook" ]]; then
+  brakeman --quiet --format sarif ${INPUT_BRAKEMAN_FLAGS} -o sarif.json
+  curl -X POST -H "Content-Type: application/json" -d @./sarif.json $INPUT_WEBHOOK_URL
+else
+  brakeman --quiet --format tabs ${INPUT_BRAKEMAN_FLAGS} \
   | reviewdog -f=brakeman \
     -name="${INPUT_TOOL_NAME}" \
     -reporter="${INPUT_REPORTER}" \
@@ -41,3 +45,4 @@ brakeman --quiet --format tabs ${INPUT_BRAKEMAN_FLAGS} \
     -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
     -level="${INPUT_LEVEL}" \
     ${INPUT_REVIEWDOG_FLAGS}
+fi
