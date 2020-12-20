@@ -34,7 +34,7 @@ fi
 gem install -N brakeman $(version $BRAKEMAN_VERSION)
 
 if [[ $INPUT_REPORTER = "webhook" ]]; then
-  brakeman --quiet --format sarif ${INPUT_BRAKEMAN_FLAGS} -o sarif.json
+  brakeman --quiet -f sarif ${INPUT_BRAKEMAN_FLAGS} -o sarif.json
   curl -X POST -H "Content-Type: application/json" -d @./sarif.json $INPUT_WEBHOOK_URL
 else
   brakeman --quiet --format tabs ${INPUT_BRAKEMAN_FLAGS} \
